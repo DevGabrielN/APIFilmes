@@ -29,19 +29,20 @@ public class FilmeController : ControllerBase
         return CreatedAtAction(nameof(RecuperarFilmePorId), new { id = filme.Id }, filme);
     }
     [HttpGet]
-    public IEnumerable<Filme> RecuperarFilmes([FromQuery] int skip = 0, [FromQuery] int take = 50)
+    public IEnumerable<ReadFilmeDto> RecuperarFilmes([FromQuery] int skip = 0, [FromQuery] int take = 50)
     {
-        return _filmeContext.Filmes.Skip(skip).Take(take);
+        return _mapper.Map<List<ReadFilmeDto>>(_filmeContext.Filmes.Skip(skip).Take(take));
     }
     [HttpGet("{id}")]
     public IActionResult RecuperarFilmePorId(int id)
     {
-        var item = _filmeContext.Filmes.Where(x => x.Id == id).FirstOrDefault();
-        if (item == null)
+        var filme = _filmeContext.Filmes.Where(x => x.Id == id).FirstOrDefault();
+        if (filme == null)
         {
             return NotFound();
         }
-        return Ok(item);
+        var filmeDto = _mapper.Map<ReadFilmeDto>(filme);
+        return Ok(filmeDto);
     }
 
     [HttpPut("{id}")]
@@ -76,6 +77,20 @@ public class FilmeController : ControllerBase
         _mapper.Map(filmeParaAtualizar, filme);
         _filmeContext.SaveChanges();
         return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    public IActionResult DeletaFilme(int id)
+    {
+        var filme = _filmeContext.Filmes.FirstOrDefault(x => x.Id == id);
+        if (filme == null)
+        {
+            return NotFound();
+        }
+        var filmeDeletado = _mapper.Map<ReadFilmeDto>(filme);
+        _filmeContext.Remove(filme);
+        _filmeContext.SaveChanges();
+        return Ok(filmeDeletado);
     }
 
 
