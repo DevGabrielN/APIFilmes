@@ -19,7 +19,7 @@ public class FilmeController : ControllerBase
         _mapper = mapper;
         _filmeContext = filmeContext;
     }
-    #region summary
+    #region
     /// <summary>
     /// Adiciona um filme ao banco de dados
     /// </summary>
@@ -37,7 +37,7 @@ public class FilmeController : ControllerBase
         _filmeContext.SaveChanges();
         return CreatedAtAction(nameof(RecuperarFilmePorId), new { id = filme.Id }, filme);
     }
-    #region summary
+    #region
     /// <summary>
     /// Recupera uma lista de filmes
     /// </summary>    
@@ -50,7 +50,7 @@ public class FilmeController : ControllerBase
     {
         return Ok(_mapper.Map<List<ReadFilmeDto>>(_filmeContext.Filmes.Skip(skip).Take(take)));
     }
-    #region summary
+    #region
     /// <summary>
     /// Recupera filme por Id
     /// </summary>
@@ -72,7 +72,7 @@ public class FilmeController : ControllerBase
         var filmeDto = _mapper.Map<ReadFilmeDto>(filme);
         return Ok(filmeDto);
     }
-    #region summary
+    #region
     /// <summary>
     /// Atualiza filme por Id
     /// </summary>
@@ -95,9 +95,9 @@ public class FilmeController : ControllerBase
         _filmeContext.SaveChanges();
         return NoContent();
     }
-    #region summary
+    #region
     /// <summary>
-    /// Atualiza filme parcialement por Id
+    /// Atualiza filme parcialmente por Id
     /// </summary>
     /// <param name="id">Id do filme</param>
     /// <param name="patch">Json patch</param>  
@@ -130,7 +130,7 @@ public class FilmeController : ControllerBase
         return NoContent();
     }
 
-    #region summary
+    #region
     /// <summary>
     /// Deleta filme por Id
     /// </summary>
